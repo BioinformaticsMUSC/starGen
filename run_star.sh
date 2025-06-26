@@ -16,7 +16,7 @@ R1=$2
 R2=$3
 
 OUTDIR="${BASE_DIR}/star_output/${SAMPLE}"
-LOG_SUMMARY="${OUTDIR}/${SAMPLE}_STAR_Log.final.out"
+LOG_SUMMARY="${OUTDIR}/${SAMPLE}_Log.final.out"
 SUMMARY_CSV="${BASE_DIR}/star_output/STAR_summary.csv"
 
 mkdir -p "$OUTDIR"
@@ -31,7 +31,10 @@ if [ -n "$R2" ]; then
        --readFilesIn "$R1" "$R2" \
        --readFilesCommand zcat \
        --outFileNamePrefix "${OUTDIR}/${SAMPLE}_" \
-       --outSAMtype BAM SortedByCoordinate
+       --outSAMtype BAM SortedByCoordinate \
+       --outSAMunmapped Within \
+       --outSAMattributes Standard \
+       --quantMode GeneCounts 
 else
   echo "Running STAR for single-end: $SAMPLE"
   STAR --runThreadN 8 \
@@ -39,7 +42,10 @@ else
        --readFilesIn "$R1" \
        --readFilesCommand zcat \
        --outFileNamePrefix "${OUTDIR}/${SAMPLE}_" \
-       --outSAMtype BAM SortedByCoordinate
+       --outSAMtype BAM SortedByCoordinate \
+       --outSAMunmapped Within \
+       --outSAMattributes Standard \
+       --quantMode GeneCounts 
 fi
 
 if [ -f "$LOG_SUMMARY" ]; then
