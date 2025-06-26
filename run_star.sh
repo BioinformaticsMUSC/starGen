@@ -5,6 +5,7 @@
 #SBATCH --time=12:00:00
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
+#SBATCH -p musc3
 
 # Load config file - adjust path if config.cfg is in a different location
 source config.cfg
