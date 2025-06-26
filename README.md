@@ -24,5 +24,24 @@ Generates scripts for finding fastQ files and generating STAR alignment scripts
 # config.cfg
 BASE_DIR=/path/to/your/fastq
 STAR_INDEX=/path/to/your/star/index
+```
 
-2. **Make scripts executable**
+2. **Make scripts executable and create logs directory**
+
+```bash
+chmod -x run_star.sh generate_submission.py
+mkdir -p logs
+```
+---
+
+## Usage
+
+1. **Generate slurm script based on your FASTQ files**
+```bash
+python generate_submission.py
+```
+
+2. **Submit jobs to SLURM**
+```bash
+bash submit_all.sh
+```
