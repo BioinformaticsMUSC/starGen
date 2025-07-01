@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "A CLI to auto-generate STAR SLURM jobs from FASTQ files"
 authors = [{ name="Bryan Granger", email="grangerb@musc.edu" }]
 license = { file = "LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
   "click",
   "pandas",
