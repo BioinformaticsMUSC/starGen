@@ -1,5 +1,7 @@
 # starGen
 
+[![License](https://img.shields.io/github/license/BioinformaticsMUSC/starGen)](LICENSE)
+
 **starGen** is a command-line RNA-seq pipeline focused on STAR alignment, QC visualization, and featureCounts quantification — optimized for SLURM clusters and scalable workflows.
 
 ---
