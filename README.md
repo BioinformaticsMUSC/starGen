@@ -37,6 +37,11 @@ cd my_rnaseq_project
 # Generate SLURM scripts for STAR alignment
 starGen generate --config config.cfg
 
+# Load modules if necessary
+
+module load biocontainers
+module load star/2.7.10a
+
 # Submit jobs (via SLURM)
 bash submit_all.sh
 
@@ -44,6 +49,8 @@ bash submit_all.sh
 starGen qc
 
 # Run featureCounts quantification on BAM files
+module load biocontainers
+module load subread
 starGen featurecounts --gtf-file /path/to/annotation.gtf
 ```
 

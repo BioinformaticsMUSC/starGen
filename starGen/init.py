@@ -29,6 +29,6 @@ GTF_FILE=/path/to/annotation.gtf
         f.write("*.out\n*.err\n*.log\nstar_output/\nsubmit_all.sh\nsample_fastq_map.json\n")
 
     print(f"✅ Project created at: {project_name}")
-    print("📄 To get started:")
+    print("To get started:")
     print(f"   cd {project_name}")
-    print("   star-pipeline generate --config config.cfg")
+    print("   starGen generate --config config.cfg")

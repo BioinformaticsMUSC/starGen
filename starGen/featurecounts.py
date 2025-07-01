@@ -29,7 +29,7 @@ def run_featurecounts(base_dir, gtf_file, out_dir="featurecounts_output", thread
         "-a", gtf_file,
         "-o", output_file,
         "-g", "gene_id",
-        "-t", "exon",
+        "-t", "gene",
         "-s", str(strand),
     ] + bam_files
 

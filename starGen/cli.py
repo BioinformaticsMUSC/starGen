@@ -34,7 +34,7 @@ def qc(summary, out_dir, min_unique, max_multi):
 
 
 
-def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand):
+def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand=0):
     import glob
     bam_pattern = os.path.join(base_dir, "**", "*Aligned.sortedByCoord.out.bam")
     bam_files = glob.glob(bam_pattern, recursive=True)
@@ -48,7 +48,7 @@ def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand):
         "-a", gtf_file,
         "-o", os.path.join(out_dir, "featurecounts_counts.txt"),
         "-g", "gene_id",
-        "-t", "exon",
+        "-t", "gene",
         "-s", str(strand),
     ] + bam_files
 
