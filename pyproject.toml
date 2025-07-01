@@ -23,7 +23,7 @@ starGen = "starGen.cli:cli"
 dev = ["pytest", "ruff"]
 
 [tool.setuptools]
-packages = ["starGen"]
+include-package-data = true
 
 [tool.setuptools.package-data]
 starGen = ["scripts/*.sh"]
