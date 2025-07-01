@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "starGen"
+version = "0.1.0"
+description = "A CLI to auto-generate STAR SLURM jobs from FASTQ files"
+authors = [{ name="Bryan Granger", email="grangerb@musc.edu" }]
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+  "click",
+  "pandas",
+  "plotly",
+  "kaleido"
+]
+
+[project.scripts]
+starGen = "starGen.cli:cli"

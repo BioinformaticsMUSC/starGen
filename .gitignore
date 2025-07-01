@@ -1,0 +1,51 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Logs and output
+*.log
+*.out
+*.err
+
+# Project-generated files
+submit_all.sh
+sample_fastq_map.json
+*.html
+*.png
+*.svg
+*.pdf
+
+# Output directories
+star_output/
+featurecounts_output/
+qc_output/
+scripts/
+tmp/
+.cache/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Packaging
+build/
+dist/
+*.egg-info/
+
+# Pytest
+.cache/
+coverage.xml
+htmlcov/
+
+# VSCode + IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# System-specific
+Thumbs.db
