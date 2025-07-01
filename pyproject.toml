@@ -21,3 +21,9 @@ starGen = "starGen.cli:cli"
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
+
+[tool.setuptools]
+packages = ["starGen"]
+
+[tool.setuptools.package-data]
+starGen = ["scripts/*.sh"]
