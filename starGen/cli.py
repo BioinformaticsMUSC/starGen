@@ -1,7 +1,9 @@
 import click
+import os
 from .init import init_project
 from .generator import generate_submission
 from .qc import visualize_star_qc
+from .config import load_config
 from .featurecounts import run_featurecounts
 
 @click.group()
@@ -30,8 +32,7 @@ def qc(summary, out_dir, min_unique, max_multi):
     """Visualize STAR alignment QC."""
     visualize_star_qc(summary_path=summary, out_dir=out_dir, min_unique=min_unique, max_multi=max_multi)
 
-from .config import load_config
-import os
+
 
 def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand):
     import glob

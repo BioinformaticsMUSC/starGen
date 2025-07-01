@@ -20,7 +20,7 @@ sample_fastq_map.json
 star_output/
 featurecounts_output/
 qc_output/
-scripts/
+starGen/scripts/
 tmp/
 .cache/
 
