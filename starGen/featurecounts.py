@@ -23,20 +23,25 @@ def run_featurecounts(base_dir, gtf_file, out_dir="featurecounts_output", thread
 
     output_file = os.path.join(out_dir, "featurecounts_counts.txt")
 
-    cmd = [
-        "featureCounts",
-        "-T", str(threads),
-        "-a", gtf_file,
-        "-o", output_file,
-        "-g", "gene_id",
-        "-t", "gene",
-        "-s", str(strand),
-    ] + bam_files
+    featurecounts_commands = (f"featureCounts -T {str(threads)} -f {gtf_file} -o {output_file} "
+                              f"-g gene_id -t gene -s {str(strand)} -p {' '.join(bam_files)}")
+    full_cmd = f"module load biocontainers; module load subread; {featurecounts_commands}"
+
+    # fc_cmd = [
+    #     "featureCounts",
+    #     "-T", str(threads),
+    #     "-a", gtf_file,
+    #     "-o", output_file,
+    #     "-g", "gene_id",
+    #     "-t", "gene",
+    #     "-s", str(strand),
+    # ] + bam_files
 
     print("🚀 Running featureCounts on BAM files...")
-    print(" ".join(cmd))
+    print(full_cmd)
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    #result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(["bash", "-l", "-c", full_cmd], check=True)
     if result.returncode != 0:
         print("❌ featureCounts failed:")
         print(result.stderr)

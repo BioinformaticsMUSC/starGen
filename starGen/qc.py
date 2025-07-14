@@ -51,3 +51,45 @@ def visualize_star_qc(summary_path="star_output/STAR_summary.csv", out_dir="star
     flagged.to_csv(f"{out_dir}/low_quality_samples.csv", index=False)
 
     print("✅ STAR QC plots and summary saved to:", out_dir)
+
+import os
+import re
+
+def parse_star_log(filepath):
+    """
+    Parses a STAR Log.final.out file and returns key metrics as a dictionary.
+    """
+    sample = os.path.basename(filepath).split(".")[0]
+    results = {
+        "sample": sample,
+        "input_reads": None,
+        "uniquely_mapped_reads": None,
+        "uniquely_mapped_percent": None,
+        "multimapped_reads": None,
+        "multimapped_percent": None,
+        "unmapped_percent": None,
+    }
+
+    with open(filepath, "r") as f:
+        for line in f:
+            if "Number of input reads" in line:
+                results["input_reads"] = int(line.split("|")[1].strip())
+            elif "Uniquely mapped reads number" in line:
+                results["uniquely_mapped_reads"] = int(line.split("|")[1].strip())
+            elif "Uniquely mapped reads %" in line:
+                results["uniquely_mapped_percent"] = float(line.split("|")[1].strip().replace("%", ""))
+            elif "Number of reads mapped to multiple loci" in line:
+                results["multimapped_reads"] = int(line.split("|")[1].strip())
+            elif "% of reads mapped to multiple loci" in line:
+                results["multimapped_percent"] = float(line.split("|")[1].strip().replace("%", ""))
+            elif "% of reads unmapped: too many mismatches" in line:
+                # We'll sum all unmapped percentages at the end
+                if results["unmapped_percent"] is None:
+                    results["unmapped_percent"] = 0.0
+                results["unmapped_percent"] += float(line.split("|")[1].strip().replace("%", ""))
+            elif "% of reads unmapped: too short" in line:
+                results["unmapped_percent"] += float(line.split("|")[1].strip().replace("%", ""))
+            elif "% of reads unmapped: other" in line:
+                results["unmapped_percent"] += float(line.split("|")[1].strip().replace("%", ""))
+
+    return results
