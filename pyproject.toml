@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "starGen"
-version = "0.1.3"
+version = "0.1.4"
 description = "A CLI to auto-generate STAR SLURM jobs from FASTQ files"
 authors = [{ name="Bryan Granger", email="grangerb@musc.edu" }]
 license = { file = "LICENSE" }

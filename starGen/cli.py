@@ -62,7 +62,8 @@ def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand=0):
 @click.option("--threads", default=8, help="Number of threads.")
 @click.option("--strand", default=0, type=int, help="Strandness (0=unstranded).")
 @click.option("--dry-run", is_flag=True, help="Show the command without running featureCounts.")
-def featurecounts(base_dir, gtf_file, config, out_dir, threads, strand, dry_run):
+@click.option("--extra-attrs", default="gene_name", help="Additional attributes to include in output (comma-separated).")
+def featurecounts(base_dir, gtf_file, config, out_dir, threads, strand, dry_run, extra_attrs):
     """Run featureCounts on all BAM files in a project."""
 
     # Load config if needed
@@ -81,7 +82,7 @@ def featurecounts(base_dir, gtf_file, config, out_dir, threads, strand, dry_run)
     # Instead of running, just print the command if dry-run
     if dry_run:
         print("Dry run mode: command that would be executed:")
-        print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand)
+        print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand, extra_attrs)
     else:
         run_featurecounts(base_dir, gtf_file, out_dir, threads, strand)
 

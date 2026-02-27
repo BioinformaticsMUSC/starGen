@@ -2,7 +2,7 @@ import os
 import glob
 import subprocess
 
-def run_featurecounts(base_dir, gtf_file, out_dir="featurecounts_output", threads=8, strand=0):
+def run_featurecounts(base_dir, gtf_file, out_dir="featurecounts_output", threads=8, strand=0, extra_attrs="gene_name"):
     """
     Run featureCounts on all BAM files in base_dir.
 
@@ -12,6 +12,7 @@ def run_featurecounts(base_dir, gtf_file, out_dir="featurecounts_output", thread
         out_dir (str): Output directory.
         threads (int): Number of threads.
         strand (int): Strandness (0=unstranded,1=forward,2=reverse).
+        extra_attrs (str): Additional attributes to include in output.
     """
     os.makedirs(out_dir, exist_ok=True)
 
@@ -24,7 +25,7 @@ def run_featurecounts(base_dir, gtf_file, out_dir="featurecounts_output", thread
     output_file = os.path.join(out_dir, "featurecounts_counts.txt")
 
     featurecounts_commands = (f"featureCounts -T {str(threads)} -f {gtf_file} -o {output_file} "
-                              f"-g gene_id -t gene -s {str(strand)} -p {' '.join(bam_files)}")
+                              f"-g gene_id -t gene -s {str(strand)} -p {'--extraAttributes ' + extra_attrs if extra_attrs else ''} {' '.join(bam_files)}")
     full_cmd = f"module load biocontainers; module load subread; {featurecounts_commands}"
 
     # fc_cmd = [
