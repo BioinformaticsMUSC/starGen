@@ -9,9 +9,33 @@ def generate_submission(config_path):
     config = load_config(config_path)
     base_dir = config["BASE_DIR"]
 
-    pattern = re.compile(r"(.+)_([12])\.(fastq|fq)(\.gz)?$")
+    # Updated pattern to handle both _1/_2 and _R1/_R2 naming conventions
+    pattern = re.compile(r"(.+)_([12]|R[12])\.(fastq|fq)(\.gz)?$")
     samples = defaultdict(lambda: {"R1": None, "R2": None})
 
+    print(f"Scanning directory: {base_dir}")
+    
+    # Check if base directory exists
+    if not os.path.exists(base_dir):
+        print(f"❌ Error: Directory {base_dir} does not exist!")
+        return
+    
+    processed_files = 0
+    total_fastq_files = 0
+    
+    # First, let's see all FASTQ files in the directory
+    for root, _, files in os.walk(base_dir):
+        fastq_files_in_dir = [f for f in files if f.endswith((".fastq", ".fastq.gz", ".fq", ".fq.gz"))]
+        if fastq_files_in_dir:
+            print(f"  Directory: {root}")
+            print(f"  Found {len(fastq_files_in_dir)} FASTQ files:")
+            for f in fastq_files_in_dir:
+                print(f"    - {f}")
+            total_fastq_files += len(fastq_files_in_dir)
+    
+    print(f"\nTotal FASTQ files found: {total_fastq_files}")
+    print(f"Attempting to parse with pattern: {pattern.pattern}\n")
+    
     for root, _, files in os.walk(base_dir):
         for file in files:
             if file.endswith((".fastq", ".fastq.gz", ".fq", ".fq.gz")):
@@ -20,12 +44,18 @@ def generate_submission(config_path):
                 if match:
                     sample = match.group(1)
                     read = match.group(2)
-                    if read == "1":
+                    # Handle both _1/_2 and _R1/_R2 naming patterns
+                    if read in ["1", "R1"]:
                         samples[sample]["R1"] = full_path
-                    elif read == "2":
+                        print(f"  ✓ Found R1 for {sample}: {file}")
+                    elif read in ["2", "R2"]:
                         samples[sample]["R2"] = full_path
-                    else:
-                        samples[sample]["R1"] = full_path
+                        print(f"  ✓ Found R2 for {sample}: {file}")
+                    processed_files += 1
+                else:
+                    print(f"  ⚠️  Skipped (unrecognized pattern): {file}")
+
+    print(f"\nProcessed {processed_files} FASTQ files for {len(samples)} samples.")
 
     with open("submit_all.sh", "w") as f:
         f.write("#!/bin/bash\n\n")
