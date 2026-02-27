@@ -9,7 +9,7 @@ def generate_submission(config_path):
     config = load_config(config_path)
     base_dir = config["BASE_DIR"]
 
-    pattern = re.compile(r"(.+?)(_R?([12])|_read([12]))?_?\d*?\.(fastq|fq)(\.gz)?$")
+    pattern = re.compile(r"(.+)_([12])\.(fastq|fq)(\.gz)?$")
     samples = defaultdict(lambda: {"R1": None, "R2": None})
 
     for root, _, files in os.walk(base_dir):
@@ -19,7 +19,7 @@ def generate_submission(config_path):
                 match = pattern.match(file)
                 if match:
                     sample = match.group(1)
-                    read = match.group(3) or match.group(4)
+                    read = match.group(2)
                     if read == "1":
                         samples[sample]["R1"] = full_path
                     elif read == "2":
