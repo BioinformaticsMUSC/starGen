@@ -34,7 +34,7 @@ def qc(summary, out_dir, min_unique, max_multi):
 
 
 
-def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand=0):
+def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand=0, extra_attrs="gene_name"):
     import glob
     bam_pattern = os.path.join(base_dir, "**", "*Aligned.sortedByCoord.out.bam")
     bam_files = glob.glob(bam_pattern, recursive=True)
@@ -50,7 +50,11 @@ def print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand=0):
         "-g", "gene_id",
         "-t", "gene",
         "-s", str(strand),
-    ] + bam_files
+        "-p"
+    ]
+    if extra_attrs:
+        cmd += ["--extraAttributes", extra_attrs]
+    cmd += bam_files
 
     print(" ".join(cmd))
 
@@ -84,7 +88,7 @@ def featurecounts(base_dir, gtf_file, config, out_dir, threads, strand, dry_run,
         print("Dry run mode: command that would be executed:")
         print_featurecounts_command(base_dir, gtf_file, out_dir, threads, strand, extra_attrs)
     else:
-        run_featurecounts(base_dir, gtf_file, out_dir, threads, strand)
+        run_featurecounts(base_dir, gtf_file, out_dir, threads, strand, extra_attrs)
 
 
 
