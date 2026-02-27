@@ -24,19 +24,9 @@ def run_featurecounts(base_dir, gtf_file, out_dir="featurecounts_output", thread
 
     output_file = os.path.join(out_dir, "featurecounts_counts.txt")
 
-    featurecounts_commands = (f"featureCounts -T {str(threads)} -f {gtf_file} -o {output_file} "
+    featurecounts_commands = (f"featureCounts -T {str(threads)} -a {gtf_file} -o {output_file} "
                               f"-g gene_id -t gene -s {str(strand)} -p {'--extraAttributes ' + extra_attrs if extra_attrs else ''} {' '.join(bam_files)}")
     full_cmd = f"module load biocontainers; module load subread; {featurecounts_commands}"
-
-    # fc_cmd = [
-    #     "featureCounts",
-    #     "-T", str(threads),
-    #     "-a", gtf_file,
-    #     "-o", output_file,
-    #     "-g", "gene_id",
-    #     "-t", "gene",
-    #     "-s", str(strand),
-    # ] + bam_files
 
     print("🚀 Running featureCounts on BAM files...")
     print(full_cmd)
