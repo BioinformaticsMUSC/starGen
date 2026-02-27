@@ -21,7 +21,7 @@ SUMMARY_CSV="${BASE_DIR}/star_output/STAR_summary.csv"
 mkdir -p "$OUTDIR"
 
 # Load STAR module (adjust for your environment)
-module load STAR/2.7.10a
+module load star
 
 if [ -n "$R2" ]; then
   echo "Running STAR for paired-end: $SAMPLE"
@@ -30,7 +30,19 @@ if [ -n "$R2" ]; then
        --readFilesIn "$R1" "$R2" \
        --readFilesCommand zcat \
        --outFileNamePrefix "${OUTDIR}/${SAMPLE}_" \
-       --outSAMtype BAM SortedByCoordinate
+       --outSAMtype BAM SortedByCoordinate \
+       --outFilterType BySJout \
+       --quantMode GeneCounts \
+       --outFilterMultimapNmax 1 \
+       --alignSJoverhangMin 10 \
+       --alignSJDBoverhangMin 1 \
+       --outFilterMismatchNoverReadLmax 0.04 \
+       --outSAMunmapped None \
+       --twopassMode Basic \
+       --chimSegmentMin 12 \
+       --outSAMattributes NH HI AS nM MD XS \
+       --alignEndsType Local \
+       --sjdbOverhang 149
 else
   echo "Running STAR for single-end: $SAMPLE"
   STAR --runThreadN 8 \
@@ -38,7 +50,19 @@ else
        --readFilesIn "$R1" \
        --readFilesCommand zcat \
        --outFileNamePrefix "${OUTDIR}/${SAMPLE}_" \
-       --outSAMtype BAM SortedByCoordinate
+       --outSAMtype BAM SortedByCoordinate \
+       --quantMode GeneCounts \
+       --outFilterType BySJout \
+       --outFilterMultimapNmax 1 \
+       --alignSJoverhangMin 10 \
+       --alignSJDBoverhangMin 1 \
+       --outFilterMismatchNoverReadLmax 0.04 \
+       --outSAMunmapped None \
+       --twopassMode Basic \
+       --chimSegmentMin 12 \
+       --outSAMattributes NH HI AS nM MD XS \
+       --alignEndsType Local \
+       --sjdbOverhang 149
 fi
 
 if [ -f "$LOG_SUMMARY" ]; then
